@@ -46,6 +46,13 @@ void loop()
       break;
     default:
       Digit *selectedDigit = Digit::GetSelectedDigit();
+      if (selectedDigit == NULL)
+      {
+        // No digit selected. Select first digit, clear and set value
+        Digit::SetSelectedDigitToFirst();
+        Digit::ClearAllDigits();
+        selectedDigit = Digit::GetSelectedDigit();
+      }
       selectedDigit->SetValue(key - '0');
       selectedDigit->SetSelectedDigitToNext();
       break;

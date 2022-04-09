@@ -48,7 +48,7 @@ public:
     // Getters/Setters
     static Digit *GetSelectedDigit();
     static void SetSelectedDigitToNext();
-    static void SetSelectedDigitToPrevious();
+    static void SetSelectedDigitToFirst();
     Digit *GetPreviousDigit();
     void SetPreviousDigit(Digit *newPreviousDigit);
     Digit *GetNextDigit();

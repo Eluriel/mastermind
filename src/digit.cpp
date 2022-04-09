@@ -212,9 +212,9 @@ void Digit::SetSelectedDigitToNext()
     selectedDigit = selectedDigit->GetNextDigit();
 }
 
-void Digit::SetSelectedDigitToPrevious()
+void Digit::SetSelectedDigitToFirst()
 {
-    selectedDigit = selectedDigit->GetPreviousDigit();
+    selectedDigit = digits[0];
 }
 Digit *Digit::GetPreviousDigit()
 {
