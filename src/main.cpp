@@ -32,11 +32,28 @@ void loop()
 
   if (key)
   {
-    Serial.println(key);
+    std::cout << "Last pressed key: " << key << std::endl;
+    switch (key)
+    {
+    case '*':
+      ClearNumber();
+      break;
+
+    default:
+      break;
+    }
     lastNumber[0] = key;
   }
   DisplayLastNumber();
   delay(1);
+}
+
+void ClearNumber()
+{
+  for (int digit = 0; digit < nbrDigits; digit++)
+  {
+    lastNumber[digit] = EMPTY_DIGIT;
+  }
 }
 
 // Function to display last number on screen
