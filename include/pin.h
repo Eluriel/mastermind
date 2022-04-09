@@ -26,4 +26,8 @@ const byte colPin2 = A5;
 const byte colPin3 = 12;
 const byte colPin4 = 13;
 
+// Led configuration
+
+#define LED_PIN 9
+
 #endif

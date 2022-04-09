@@ -1,5 +1,9 @@
 #include <ArduinoSTL.h>
 #include <Keypad.h>
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+#include <avr/power.h>
+#endif
 
 #include "header.h"
 #include "pin.h"
@@ -9,6 +13,8 @@
 byte rowPins[4] = {rowPin1, rowPin2, rowPin3, rowPin4};
 byte colPins[4] = {colPin1, colPin2, colPin3, colPin4};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+Adafruit_NeoPixel pixels(4, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 Digit digits[] = {
     Digit(0, 0, digitPin1, 1),
@@ -24,6 +30,10 @@ void setup()
   pinMode(data, OUTPUT);
 
   Serial.begin(9600);
+
+  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+  pixels.clear(); // Set all pixel colors to 'off'
+  pixels.show();  // Send the updated pixel colors to the hardware.
 
   // Choose solution
   Digit::InitSolution();

@@ -3,9 +3,6 @@
 
 #include <ArduinoSTL.h>
 
-void CheckResult();
-void ClearNumber();
-
 // Keypad settings
 
 const byte ROWS = 4; // four rows
