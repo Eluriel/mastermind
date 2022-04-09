@@ -57,6 +57,12 @@ void loop()
     case '#':
       SendAnswer();
       break;
+    // Disable for A, B, C or D
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'D':
+      break;
     default:
       WriteKey(key);
       break;
