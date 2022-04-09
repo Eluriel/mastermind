@@ -1,15 +1,20 @@
 #include <ArduinoSTL.h>
 #include <Keypad.h>
-#include <map>
 
 #include "header.h"
 #include "pin.h"
+#include "digit.h"
 
-// Global variables declaration
+// Create global objects
+byte rowPins[4] = {rowPin1, rowPin2, rowPin3, rowPin4};
+byte colPins[4] = {colPin1, colPin2, colPin3, colPin4};
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
-char lastNumber[nbrDigits] = {EMPTY_DIGIT, '4', EMPTY_DIGIT, '2'};
-int currentDigit = 0;
 
+Digit digits[] = {
+    Digit(0, 0, digitPin1, 1),
+    Digit(1, 0, digitPin2, 1),
+    Digit(2, 0, digitPin3, 1),
+    Digit(3, 0, digitPin4, 1)};
 
 void setup()
 {
@@ -18,18 +23,10 @@ void setup()
   pinMode(clock, OUTPUT);
   pinMode(data, OUTPUT);
 
-  // Configuring output pins for commun cathod of each 7 segment digit
-  for (int i = 0; i < nbrDigits; i++)
-  {
-    pinMode(digitPins[i], OUTPUT);
-    digitalWrite(digitPins[i], HIGH);
-  }
-
   Serial.begin(9600);
 
   // Choose solution
-  
-  currentDigit = 0;
+  Digit::InitSolution();
 }
 
 void loop()
@@ -42,59 +39,31 @@ void loop()
     switch (key)
     {
     case '*':
-      ClearNumber();
+      Digit::ShowFinishLoop();
       break;
     case '#':
-      CheckResult();
+      Digit::SubmitAnswer();
       break;
     default:
-      lastNumber[currentDigit] = key;
-      currentDigit++;
-      if (currentDigit >= nbrDigits)
-      {
-        currentDigit = 0;
-      }
+      Digit *selectedDigit = Digit::GetSelectedDigit();
+      selectedDigit->SetValue(key - '0');
+      selectedDigit->SetSelectedDigitToNext();
       break;
     }
   }
-  DisplayLastNumber();
-  delay(1);
+  Digit::Update();
 }
 
 void CheckResult()
 {
-  std::cout << "Input number: " << lastNumber[0] << lastNumber[1] << lastNumber[2] << lastNumber[3] << std::endl;
+  std::cout << "Input number: " << digits[0].GetValue() << digits[1].GetValue() << digits[2].GetValue() << digits[3].GetValue() << std::endl;
 }
 
 void ClearNumber()
 {
-  for (int digit = 0; digit < nbrDigits; digit++)
-  {
-    lastNumber[digit] = EMPTY_DIGIT;
-  }
-  currentDigit = 0;
-}
-
-// Function to display last number on screen
-void DisplayLastNumber()
-{
-  for (int digit = 0; digit < nbrDigits; digit++)
-  {
-    if (lastNumber[digit] != ' ')
-    {
-      DisplayDigit(lastNumber[digit], digit);
-    }
-  }
-}
-
-// Function to display on one seven segments digit
-void DisplayDigit(unsigned char num, int digit)
-{
-  digitalWrite(latch, LOW);
-  shiftOut(data, clock, MSBFIRST, conversionMap[num]);
-  digitalWrite(latch, HIGH);
-
-  digitalWrite(digitPins[digit], LOW);
-  delay(4);
-  digitalWrite(digitPins[digit], HIGH);
+  // for (int digit = 0; digit < nbrDigits; digit++)
+  // {
+  //   lastNumber[digit] = EMPTY_DIGIT;
+  // }
+  // currentDigit = 0;
 }
