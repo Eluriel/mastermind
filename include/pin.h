@@ -29,5 +29,6 @@ const byte colPin4 = 13;
 // Led configuration
 
 #define LED_PIN 9
+#define LOCK_PIN 1
 
 #endif

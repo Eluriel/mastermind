@@ -29,6 +29,10 @@ void setup()
   pinMode(clock, OUTPUT);
   pinMode(data, OUTPUT);
 
+  // Set pin for lock
+  pinMode(LOCK_PIN, OUTPUT);
+  digitalWrite(LOCK_PIN, LOW);
+
   Serial.begin(9600);
 
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
@@ -129,6 +133,7 @@ void SendAnswer()
   {
     Digit::ShowFinishLoop();
     finished = true;
-    // TODO: Open chest
+    // Open lock
+    digitalWrite(LOCK_PIN, HIGH);
   }
 }
