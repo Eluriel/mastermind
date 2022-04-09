@@ -53,17 +53,3 @@ void loop()
   }
   Digit::Update();
 }
-
-void CheckResult()
-{
-  std::cout << "Input number: " << digits[0].GetValue() << digits[1].GetValue() << digits[2].GetValue() << digits[3].GetValue() << std::endl;
-}
-
-void ClearNumber()
-{
-  // for (int digit = 0; digit < nbrDigits; digit++)
-  // {
-  //   lastNumber[digit] = EMPTY_DIGIT;
-  // }
-  // currentDigit = 0;
-}
