@@ -1,5 +1,6 @@
 #include <ArduinoSTL.h>
 
+void CheckResult();
 void ClearNumber();
 void DisplayDigit(unsigned char num, int digit);
 void DisplayLastNumber();

@@ -8,6 +8,8 @@
 // Global variables declaration
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 char lastNumber[nbrDigits] = {EMPTY_DIGIT, '4', EMPTY_DIGIT, '2'};
+int currentDigit = 0;
+
 
 void setup()
 {
@@ -24,6 +26,10 @@ void setup()
   }
 
   Serial.begin(9600);
+
+  // Choose solution
+  
+  currentDigit = 0;
 }
 
 void loop()
@@ -38,14 +44,26 @@ void loop()
     case '*':
       ClearNumber();
       break;
-
+    case '#':
+      CheckResult();
+      break;
     default:
+      lastNumber[currentDigit] = key;
+      currentDigit++;
+      if (currentDigit >= nbrDigits)
+      {
+        currentDigit = 0;
+      }
       break;
     }
-    lastNumber[0] = key;
   }
   DisplayLastNumber();
   delay(1);
+}
+
+void CheckResult()
+{
+  std::cout << "Input number: " << lastNumber[0] << lastNumber[1] << lastNumber[2] << lastNumber[3] << std::endl;
 }
 
 void ClearNumber()
@@ -54,6 +72,7 @@ void ClearNumber()
   {
     lastNumber[digit] = EMPTY_DIGIT;
   }
+  currentDigit = 0;
 }
 
 // Function to display last number on screen
