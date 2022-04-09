@@ -4,12 +4,11 @@
 Digit *Digit::selectedDigit = NULL;
 Digit *Digit::digits[] = {NULL, NULL, NULL, NULL};
 
-Digit::Digit(int number, int value, int digitPin, int answerPin)
+Digit::Digit(int number, int value, int digitPin)
 {
     this->number = number;
     this->value = value;
     this->digitPin = digitPin;
-    this->answerPin = answerPin;
     this->isHalfCorrect = false;
     this->isFullCorrect = false;
     this->guess = -1;
@@ -35,7 +34,6 @@ Digit::Digit(int number, int value, int digitPin, int answerPin)
 void Digit::init()
 {
     pinMode(digitPin, OUTPUT);
-    pinMode(answerPin, OUTPUT);
     digitalWrite(digitPin, HIGH); // set digitpin off by default
 }
 
@@ -47,7 +45,6 @@ void Digit::InitSolution()
         digits[i]->value = 16;
         digits[i]->answer = solution[i];
         digits[i]->ResetAnsweredStatus();
-        digitalWrite(digits[i]->answerPin, LOW); // turn off led
         digits[i]->SetNumber();
         selectedDigit = digits[0];
     }
@@ -60,7 +57,6 @@ void Digit::Update()
     {
         Digit *digit = digits[i];
         digit->SetNumber();
-        digits[i]->SetAnswerLed();
     }
 }
 
@@ -90,52 +86,28 @@ void Digit::ShowFinishLoop()
     Digit::InitSolution();
 }
 
-bool Digit::SubmitAnswer()
+std::pair<int, int> Digit::SubmitAnswer()
 {
     Digit::ResetAnsweredStatus();
     // Disable blinking
     selectedDigit = NULL;
     Serial.println(String("number: value, answer, halfCorrect, fullCorrect"));
-    int count = 0;
+    int countFull = 0;
+    int countHalf = 0;
     for (int i = 0; i < 4; i++)
     {
         digits[i]->UpdateAnsweredStatus();
         if (digits[i]->isFullCorrect)
         {
-            count++;
+            countFull++;
+        }
+        if (digits[i]->isHalfCorrect)
+        {
+            countHalf++;
         }
         Serial.println(String(digits[i]->number) + String(": ") + String(digits[i]->value) + String(", ") + String(digits[i]->answer) + String(", ") + String(digits[i]->isHalfCorrect) + String(", ") + String(digits[i]->isFullCorrect));
     }
-    return (count == 4);
-}
-
-void Digit::SetAnswerLed()
-{
-    int highLow = LOW;
-    if (isFullCorrect)
-    {
-        if (this->answer == this->value)
-        {
-            highLow = HIGH;
-        }
-        else if (millis() % blinkCycle < 0.9 * blinkCycle)
-        {
-            highLow = HIGH;
-        }
-    }
-
-    if (isHalfCorrect)
-    {
-        if (this->value == this->guess && millis() % blinkCycle > 0.5 * blinkCycle)
-        {
-            highLow = HIGH;
-        }
-        else if ((millis() % blinkCycle > 0.4 * blinkCycle) && (millis() % blinkCycle < 0.5 * blinkCycle))
-        {
-            highLow = HIGH;
-        }
-    }
-    digitalWrite(answerPin, highLow);
+    return std::make_pair(countFull, countHalf);
 }
 
 void Digit::UpdateAnsweredStatus()

@@ -12,7 +12,6 @@ private:
     int value;
     int answer;
     int digitPin;
-    int answerPin;
     int guess;
     bool isSelected;
     bool isHalfCorrect;
@@ -28,7 +27,6 @@ private:
     static Digit *unansweredDigitWithAnswer(int answerSearched);
 
     void init();
-    void SetAnswerLed();
     void SetNumber();
     void SetDigitPin(int highLow);
     void UpdateAnsweredStatus();
@@ -40,10 +38,10 @@ public:
     static void InitSolution();
     static void Update();
     static void ClearAllDigits();
-    static bool SubmitAnswer();
+    static std::pair<int, int> SubmitAnswer(); // First is nb of full, second is nb of half
     static void ShowFinishLoop();
 
-    Digit(int number, int value, int digitPin, int answerPin);
+    Digit(int number, int value, int digitPin);
 
     // Getters/Setters
     static Digit *GetSelectedDigit();

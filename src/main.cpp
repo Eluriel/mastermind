@@ -15,10 +15,10 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 Adafruit_NeoPixel pixels(4, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 Digit digits[] = {
-    Digit(0, 0, digitPin1, 1),
-    Digit(1, 0, digitPin2, 1),
-    Digit(2, 0, digitPin3, 1),
-    Digit(3, 0, digitPin4, 1)};
+    Digit(0, 0, digitPin1),
+    Digit(1, 0, digitPin2),
+    Digit(2, 0, digitPin3),
+    Digit(3, 0, digitPin4)};
 
 void setup()
 {
