@@ -1,13 +1,11 @@
 #include <ArduinoSTL.h>
 #include <Keypad.h>
 #include <Adafruit_NeoPixel.h>
-#ifdef __AVR__
 #include <avr/power.h>
-#endif
 
-#include "header.h"
-#include "pin.h"
 #include "digit.h"
+#include "main.h"
+#include "pin.h"
 
 // Create global objects
 byte rowPins[4] = {rowPin1, rowPin2, rowPin3, rowPin4};

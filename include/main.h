@@ -1,7 +1,11 @@
-#ifndef MY_HEADER_H
-#define MY_HEADER_H
+#ifndef MY_MAIN_H
+#define MY_MAIN_H
 
 #include <ArduinoSTL.h>
+
+void ClearData();
+void SendAnswer();
+void WriteKey(char key);
 
 // Keypad settings
 
