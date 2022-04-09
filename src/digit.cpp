@@ -83,7 +83,12 @@ void Digit::ShowFinishLoop()
             digits[i]->SetNumber();
         }
     }
-    Digit::InitSolution();
+    // Display solution after animation timeout
+    for (int i = 0; i < 4; i++)
+    {
+        digits[i]->value = digits[i]->answer;
+        digits[i]->SetNumber();
+    }
 }
 
 std::pair<int, int> Digit::SubmitAnswer()

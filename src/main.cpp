@@ -20,6 +20,8 @@ Digit digits[] = {
     Digit(2, 0, digitPin3),
     Digit(3, 0, digitPin4)};
 
+bool finished = false;
+
 void setup()
 {
   // Configuring output pins for the 74HC595
@@ -36,13 +38,15 @@ void setup()
 
   // Choose solution
   Digit::InitSolution();
+  finished = false;
 }
 
 void loop()
 {
   char key = keypad.getKey();
 
-  if (key)
+  // Disable keypad when game is finished
+  if (key && !finished)
   {
     std::cout << "Last pressed key: " << key << std::endl;
     switch (key)
@@ -84,6 +88,11 @@ void WriteKey(char key)
 
 void SendAnswer()
 {
+  // Prevent displaying answer if no all 4 values entered
+  if (digits[3].GetValue() == 16)
+  {
+    return;
+  }
   std::pair<int, int> reply = Digit::SubmitAnswer();
   int nbFull = reply.first;
   int nbHalf = reply.second;
@@ -108,4 +117,12 @@ void SendAnswer()
     }
   }
   pixels.show();
+
+  // Won game!
+  if (nbFull == 4)
+  {
+    Digit::ShowFinishLoop();
+    finished = true;
+    // TODO: Open chest
+  }
 }
