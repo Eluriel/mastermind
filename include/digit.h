@@ -39,6 +39,7 @@ public:
 
     static void InitSolution();
     static void Update();
+    static void ClearAllDigits();
     static bool SubmitAnswer();
     static void ShowFinishLoop();
 

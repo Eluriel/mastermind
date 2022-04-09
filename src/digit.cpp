@@ -44,7 +44,7 @@ void Digit::InitSolution()
     int solution[] = {1, 2, 3, 4};
     for (int i = 0; i < 4; i++)
     {
-        digits[i]->value = 0;
+        digits[i]->value = 16;
         digits[i]->answer = solution[i];
         digits[i]->ResetAnsweredStatus();
         digitalWrite(digits[i]->answerPin, LOW); // turn off led
@@ -61,6 +61,15 @@ void Digit::Update()
         Digit *digit = digits[i];
         digit->SetNumber();
         digits[i]->SetAnswerLed();
+    }
+}
+
+void Digit::ClearAllDigits()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        digits[i]->value = 16;
+        selectedDigit = digits[0];
     }
 }
 
@@ -84,6 +93,8 @@ void Digit::ShowFinishLoop()
 bool Digit::SubmitAnswer()
 {
     Digit::ResetAnsweredStatus();
+    // Disable blinking
+    selectedDigit = NULL;
     Serial.println(String("number: value, answer, halfCorrect, fullCorrect"));
     int count = 0;
     for (int i = 0; i < 4; i++)

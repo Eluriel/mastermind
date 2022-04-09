@@ -39,7 +39,7 @@ void loop()
     switch (key)
     {
     case '*':
-      Digit::ShowFinishLoop();
+      Digit::ClearAllDigits();
       break;
     case '#':
       Digit::SubmitAnswer();
