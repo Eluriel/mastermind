@@ -131,9 +131,9 @@ void SendAnswer()
   // Won game!
   if (nbFull == 4)
   {
-    Digit::ShowFinishLoop();
     finished = true;
     // Open lock
     digitalWrite(LOCK_PIN, HIGH);
+    Digit::ShowFinishLoop();
   }
 }
