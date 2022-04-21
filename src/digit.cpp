@@ -39,11 +39,10 @@ void Digit::init()
 
 void Digit::InitSolution()
 {
-    int solution[] = {1, 2, 3, 4};
     for (int i = 0; i < 4; i++)
     {
         digits[i]->value = 16;
-        digits[i]->answer = solution[i];
+        digits[i]->answer = random(10);
         digits[i]->ResetAnsweredStatus();
         digits[i]->SetNumber();
         selectedDigit = digits[0];

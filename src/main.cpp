@@ -7,6 +7,7 @@
 #include "digit.h"
 #include "main.h"
 #include "pin.h"
+#include "randomSeedGenerator.h"
 
 // Create global objects
 byte rowPins[4] = {rowPin1, rowPin2, rowPin3, rowPin4};
@@ -41,6 +42,7 @@ void setup()
   digitalWrite(LOCK_PIN, LOW);
 
   Serial.begin(9600);
+  setupSeed();
 
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
   pixels.clear(); // Set all pixel colors to 'off'
