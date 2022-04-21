@@ -26,6 +26,9 @@ bool started = false;
 
 auto timer = timer_create_default(); // create a timer with default settings
 
+// Animation linked value
+bool invertBrightnessDirection = false;
+
 void setup()
 {
   // Configuring output pins for the 74HC595
@@ -41,7 +44,7 @@ void setup()
 
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
   pixels.clear(); // Set all pixel colors to 'off'
-  pixels.setBrightness(64);
+  pixels.setBrightness(0);
   pixels.show(); // Send the updated pixel colors to the hardware.
 
   // Choose solution
@@ -59,6 +62,11 @@ void setup()
 
 void loop()
 {
+  // If not started, display animation with LEDs
+  if (!started){
+    LedPulseAnimation();
+  }
+  
   char key = keypad.getKey();
 
   // Disable keypad when game is finished
@@ -88,6 +96,7 @@ void loop()
     case 'B':
     case 'C':
     case 'D':
+      digitalWrite(LOCK_PIN, LOW);
       break;
     default:
       WriteKey(key);
@@ -97,6 +106,20 @@ void loop()
   Digit::Update();
   timer.tick();
 }
+
+void LedPulseAnimation()
+{
+  pixels.fill(pixels.Color(204,0,0),0,4);
+  if (pixels.getBrightness() == 255)
+  {
+    invertBrightnessDirection = true;
+  }
+  else if (pixels.getBrightness() == 1)
+  {
+    invertBrightnessDirection = false;
+  }
+  pixels.setBrightness(pixels.getBrightness() + (invertBrightnessDirection ? -1 : +1));
+  pixels.show();
 }
 
 void ClearData()

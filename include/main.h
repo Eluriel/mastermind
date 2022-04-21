@@ -3,6 +3,7 @@
 
 #include <ArduinoSTL.h>
 
+void LedPulseAnimation();
 void ClearData();
 void SendAnswer();
 void WriteKey(char key);
