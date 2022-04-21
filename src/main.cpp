@@ -1,7 +1,8 @@
-#include <ArduinoSTL.h>
-#include <Keypad.h>
 #include <Adafruit_NeoPixel.h>
+#include <ArduinoSTL.h>
+#include <arduino-timer.h>
 #include <avr/power.h>
+#include <Keypad.h>
 
 #include "digit.h"
 #include "main.h"
@@ -21,6 +22,9 @@ Digit digits[] = {
     Digit(3, 0, digitPin4)};
 
 bool finished = false;
+bool started = false;
+
+auto timer = timer_create_default(); // create a timer with default settings
 
 void setup()
 {
@@ -43,6 +47,14 @@ void setup()
   // Choose solution
   Digit::InitSolution();
   finished = false;
+
+  // Open safe if D is pressed on start up
+  char key = keypad.getKey();
+  if (key && key == 'D'){
+    digitalWrite(LOCK_PIN, HIGH);
+    // Will close automatically after 5 seconds
+    timer.in(5000, [](void*) -> bool { digitalWrite(LOCK_PIN, LOW); return false; });
+  }
 }
 
 void loop()
@@ -52,6 +64,16 @@ void loop()
   // Disable keypad when game is finished
   if (key && !finished)
   {
+    // Disable started mode, switch off LEDs and close door
+    if (!started)
+    {
+      digitalWrite(LOCK_PIN, LOW);
+      pixels.clear();
+      pixels.setBrightness(64);
+      pixels.show();
+      started = true;
+    }
+    
     std::cout << "Last pressed key: " << key << std::endl;
     switch (key)
     {
@@ -73,6 +95,8 @@ void loop()
     }
   }
   Digit::Update();
+  timer.tick();
+}
 }
 
 void ClearData()
@@ -135,5 +159,8 @@ void SendAnswer()
     // Open lock
     digitalWrite(LOCK_PIN, HIGH);
     Digit::ShowFinishLoop();
+    
+    // To prevent lock overheating, release lock after 5 seconds
+    timer.in(5000, [](void*) -> bool { digitalWrite(LOCK_PIN, LOW); return false; });
   }
 }
