@@ -27,8 +27,10 @@ const byte colPin3 = 12;
 const byte colPin4 = 13;
 
 // Led configuration
-
 #define LED_PIN 9
+const int ledOrder[4] = {2,1,3,0};
+
+// Door configuration
 #define LOCK_PIN 10
 
 #endif

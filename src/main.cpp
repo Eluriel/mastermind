@@ -115,15 +115,15 @@ void SendAnswer()
   {
     if (i < nbFull)
     {
-      pixels.setPixelColor(i, 0, 204, 0);
+      pixels.setPixelColor(ledOrder[i], 0, 204, 0);
     }
     else if (i < (nbFull + nbHalf))
     {
-      pixels.setPixelColor(i, 0, 0, 204);
+      pixels.setPixelColor(ledOrder[i], 0, 0, 204);
     }
     else
     {
-      pixels.setPixelColor(i, 204, 0, 0);
+      pixels.setPixelColor(ledOrder[i], 204, 0, 0);
     }
   }
   pixels.show();
