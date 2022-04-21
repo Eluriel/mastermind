@@ -52,12 +52,7 @@ void setup()
   finished = false;
 
   // Open safe if D is pressed on start up
-  char key = keypad.getKey();
-  if (key && key == 'D'){
-    digitalWrite(LOCK_PIN, HIGH);
-    // Will close automatically after 5 seconds
-    timer.in(5000, [](void*) -> bool { digitalWrite(LOCK_PIN, LOW); return false; });
-  }
+  OpenSafeStartUp();
 }
 
 void loop()
@@ -105,6 +100,13 @@ void loop()
   }
   Digit::Update();
   timer.tick();
+}
+
+void OpenSafeStartUp()
+{
+  digitalWrite(LOCK_PIN, HIGH);
+  // Will close automatically after 2 seconds
+  timer.in(2000, [](void*) -> bool { digitalWrite(LOCK_PIN, LOW); return false; });
 }
 
 void LedPulseAnimation()
